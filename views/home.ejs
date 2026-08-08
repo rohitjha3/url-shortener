@@ -1,51 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Page</title>
+
+  <title>URL Shortener</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .nav {
+      height: 72px;
+      background: white;
+      border-bottom: 1px solid #e8ebf2;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 6%;
+
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.6px;
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: #635bff;
+    }
+
+    .nav-right {
+      color: #667085;
+      font-size: 14px;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 58px 0 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #eeecff;
+      color: #544ccf;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.04;
+      letter-spacing: -1.8px;
+      max-width: 720px;
+    }
+
+    .subtitle {
+      color: #667085;
+      font-size: 17px;
+      line-height: 1.6;
+      max-width: 650px;
+      margin: 16px 0 28px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e8ebf2;
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(25, 35, 60, 0.06);
+    }
+
+    .create-card {
+      padding: 22px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #d9deea;
+      background: #fbfcfe;
+      border-radius: 11px;
+      padding: 14px 15px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #635bff;
+      box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+      background: white;
+    }
+
+    button {
+      border: 0;
+      border-radius: 11px;
+      padding: 0 20px;
+      background: #635bff;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: #5148df;
+    }
+
+    .success {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #ecfdf3;
+      border: 1px solid #c7f0d7;
+      color: #18794e;
+      font-size: 14px;
+    }
+
+    .success a {
+      font-weight: 700;
+      color: #126b45;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .section {
+      padding: 10px 0 60px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin: 30px 0 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: #98a2b3;
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+
+    th,
+    td {
+      padding: 16px 18px;
+      border-bottom: 1px solid #eef0f5;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: #667085;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      background: #fafbfc;
+    }
+
+    td {
+      color: #344054;
+    }
+
+    .short {
+      color: #635bff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .original {
+      max-width: 340px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #667085;
+    }
+
+    .clicks {
+      display: inline-flex;
+      min-width: 38px;
+      justify-content: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #f2f4f7;
+      font-weight: 700;
+    }
+
+    .analytics {
+      color: #635bff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: #98a2b3;
+    }
+
+    @media (max-width: 650px) {
+
+      .nav {
+        padding: 0 4%;
+      }
+
+      .hero {
+        padding-top: 38px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      button {
+        height: 48px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>URL Shortener</h1>
 
-  <% if (locals.id) { %>
-    <p>URL Generated: <a href="http://localhost:8001/<%= id %>">URL</a> </p>
- <% } %>
+  <nav class="nav">
 
-  <div>
-    <form method="POST" action="/url">
-      <label>Enter your original URL</label>
-      <input type="text" placeholder="https://example.com" name="url">
-      <button type="submit">Generate</button>
-    </form>
-  </div>
+    <a class="brand" href="/">
+      Short<span>ly</span>
+    </a>
 
-  <div>
-   <% if (locals.urls) {  %>
-     <table>
-      <thead>
-        <th>S. No</th>
-        <th>ShortID</th>
-        <th>Redirect</th>
-        <th>Clicks</th>
-      </thead>
-      <tbody>
-        <% urls.forEach((url, index) => { %>
-            <tr>
-                 <td> <%= index +1 %> </td>
-                 <td><%= url.shortId %></td>
-                 <td><%= url.redirectURL %></td>
-                 <td><%= url.visitHistory.length %></td>
+    <div class="nav-right">
+      Simple links. Better sharing.
+    </div>
+
+  </nav>
+
+  <main class="container">
+
+    <section class="hero">
+
+      <div class="eyebrow">
+        URL SHORTENER
+      </div>
+
+      <h1>
+        Turn long links into clean, shareable URLs.
+      </h1>
+
+      <p class="subtitle">
+        Create short links in seconds and keep track of how many times they are visited.
+      </p>
+
+      <div class="card create-card">
+
+        <form method="POST" action="/url">
+
+          <div class="form-row">
+
+            <input
+              type="url"
+              required
+              placeholder="https://example.com/your-long-url"
+              name="url"
+              autocomplete="url"
+            >
+
+            <button type="submit">
+              Create short URL
+            </button>
+
+          </div>
+
+        </form>
+
+        <% if (locals.id) { %>
+
+          <div class="success">
+
+            Your short URL is ready:
+
+            <a
+              href="/<%= id %>"
+              target="_blank"
+              rel="noopener"
+            >
+              /<%= id %>
+            </a>
+
+          </div>
+
+        <% } %>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>Your URLs</h2>
+
+          <p>
+            Manage your shortened links and view performance.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="card table-wrap">
+
+        <% if (locals.urls && urls.length) { %>
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>#</th>
+                <th>Short URL</th>
+                <th>Original URL</th>
+                <th>Clicks</th>
+                <th>Analytics</th>
               </tr>
-        <% }) %>
-      </tbody>
-     </table>
 
-   <% } %>
+            </thead>
 
-  </div>
-  
-  
+            <tbody>
+
+              <% urls.forEach((url, index) => { %>
+
+                <tr>
+
+                  <td>
+                    <%= index + 1 %>
+                  </td>
+
+                  <td>
+
+                    <a
+                      class="short"
+                      href="/<%= url.shortId %>"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      /<%= url.shortId %>
+                    </a>
+
+                  </td>
+
+                  <td
+                    class="original"
+                    title="<%= url.redirectURL %>"
+                  >
+                    <%= url.redirectURL %>
+                  </td>
+
+                  <td>
+
+                    <span class="clicks">
+                      <%= url.visitHistory.length %>
+                    </span>
+
+                  </td>
+
+                  <td>
+
+                    <a
+                      class="analytics"
+                      href="/url/analytics/<%= url.shortId %>"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      View →
+                    </a>
+
+                  </td>
+
+                </tr>
+
+              <% }) %>
+
+            </tbody>
+
+          </table>
+
+        <% } else { %>
+
+          <div class="empty">
+            No shortened URLs yet. Create your first one above.
+          </div>
+
+        <% } %>
+
+      </div>
+
+    </section>
+
+  </main>
+
 </body>
 </html>
