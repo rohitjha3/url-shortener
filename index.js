@@ -8,7 +8,7 @@ const {checkForAuthentication,restrictTo} = require('./middlewares/auth');
 const {connectMongoDb} = require("./connection");
 
 const app = express();
-const PORT = 8001;
+const PORT = process.env.PORT || 8001;
 
 const staticRoute = require("./routes/staticRouter");
 const urlRoute = require("./routes/url");
